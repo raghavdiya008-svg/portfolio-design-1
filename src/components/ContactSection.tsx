@@ -31,7 +31,7 @@ export const ContactSection: React.FC = () => {
     // Trigger direct mail client dispatch
     const subject = encodeURIComponent(`Portfolio Inquiry from ${formData.name}`);
     const body = encodeURIComponent(
-      `Hello Lohitha,\n\n${formData.message}\n\nSender: ${formData.name}\nReply to: ${formData.email}`
+      `Hello,\n\n${formData.message}\n\nSender: ${formData.name}\nReply to: ${formData.email}`
     );
     window.open(`mailto:${directEmail}?subject=${subject}&body=${body}`, '_blank');
   };

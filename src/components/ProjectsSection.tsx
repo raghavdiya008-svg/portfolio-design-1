@@ -21,7 +21,7 @@ const projects: Project[] = [
     category: 'AI / LEGAL-TECH PLATFORM',
     description:
       'AI-powered platform engineered for automated privacy policy analysis and legal contract auditing across web, desktop, and mobile. Implements NLP extraction, real-time risk alert detection, and generative risk score intelligence.',
-    githubUrl: 'https://github.com/lohithadamisetti123',
+    githubUrl: 'https://github.com/raghavdiya008-svg/portfolio-design-1',
     demoUrl: '#contact',
     tech: [
       'React.js',
@@ -47,7 +47,7 @@ const projects: Project[] = [
     category: 'MACHINE LEARNING / DEV PLATFORM',
     description:
       'Full-stack predictive release management platform utilizing Machine Learning. Implements a trained Random Forest classifier to categorize release stability from Low to Critical risk, rendered over a live interactive team heatmap.',
-    githubUrl: 'https://github.com/lohithadamisetti123',
+    githubUrl: 'https://github.com/raghavdiya008-svg/portfolio-design-1',
     demoUrl: '#contact',
     tech: [
       'React.js',
@@ -72,7 +72,7 @@ const projects: Project[] = [
     category: 'CLOUD / DISTRIBUTED SYSTEM',
     description:
       'Enterprise-grade multi-tenant platform built for unified management of teams, projects, and execution lifecycles. Architected with strict tenant data isolation, granular Role-Based Access Control (RBAC), and containerized deployments.',
-    githubUrl: 'https://github.com/lohithadamisetti123',
+    githubUrl: 'https://github.com/raghavdiya008-svg/portfolio-design-1',
     demoUrl: '#contact',
     tech: [
       'Node.js',
@@ -97,7 +97,7 @@ const projects: Project[] = [
     category: 'FINTECH / PAYMENT SYSTEMS',
     description:
       'End-to-end hosted payment gateway infrastructure supporting seamless merchant order generation, multi-currency processing, and secure consumer checkout via UPI and Cards with webhook transaction verification.',
-    githubUrl: 'https://github.com/lohithadamisetti123',
+    githubUrl: 'https://github.com/raghavdiya008-svg/portfolio-design-1',
     demoUrl: '#contact',
     tech: [
       'Node.js',

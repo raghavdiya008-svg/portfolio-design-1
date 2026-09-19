@@ -112,7 +112,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onOpenMo
             className="text-xs sm:text-sm font-semibold tracking-[0.35em] uppercase text-[#EAD8C7] hover:opacity-75 transition-opacity select-none"
             style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
-            LOHITHA.
+            PORTFOLIO.
           </a>
 
           {/* Navigation Links */}
@@ -286,7 +286,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onOpenMo
                 letterSpacing: '0.04em',
               }}
             >
-              Lohitha
+              Developer
             </div>
           </motion.div>
         </div>

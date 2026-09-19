@@ -64,7 +64,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
                   className="text-3xl sm:text-4xl text-white tracking-wide uppercase mt-1"
                   style={{ fontFamily: "'Bebas Neue', sans-serif" }}
                 >
-                  LOHITHA DAMISETTI
+                  FULL STACK DEVELOPER
                 </h2>
                 <p className="text-xs text-[#A8988B] tracking-wider uppercase mt-0.5">
                   Full Stack Developer • UI/UX Designer • Data Science Specialization

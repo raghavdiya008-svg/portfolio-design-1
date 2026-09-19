@@ -83,7 +83,7 @@ export const FloatingNav: React.FC = () => {
                 data-cursor-text="TOP"
                 className="text-xs font-semibold tracking-[0.3em] uppercase text-[#EAD8C7] hover:text-[#D4AF37] transition-colors select-none"
               >
-                LOHITHA.
+                PORTFOLIO.
               </a>
 
               {/* Desktop Section Links */}
