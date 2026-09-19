@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { smoothScrollTo } from '../utils/lenis';
 
-const navItems = [
+interface NavItem {
+  name: string;
+  href: string;
+}
+
+const navItems: NavItem[] = [
   { name: 'ABOUT', href: '#about' },
   { name: 'PROJECTS', href: '#work' },
   { name: 'SKILLS', href: '#skills' },
@@ -17,15 +23,14 @@ export const FloatingNav: React.FC = () => {
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     if (href === '#') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      smoothScrollTo(0);
+      setMobileMenuOpen(false);
       return;
     }
     const id = href.replace('#', '');
     const el = document.getElementById(id);
     if (el) {
-      const yOffset = -80;
-      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
+      smoothScrollTo(el, -70);
     }
     setMobileMenuOpen(false);
   };

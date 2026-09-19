@@ -1,9 +1,85 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Montserrat:wght@200;300;400;500;600&display=swap');
 @import "tailwindcss";
-html, body {
+@import "lenis/dist/lenis.css";
+
+/* Base Reset & Hardware Optimizations */
+html {
+  scroll-behavior: auto !important; /* Managed by Lenis for unified physics */
+  background-color: #000000;
+  color: #E8DFD8;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  background-color: #000;
+  background-color: #000000;
+  width: 100%;
+}
+
+/* Luxury Gold Text Selection */
+::selection {
+  background-color: #D4AF37;
+  color: #000000;
+}
+
+::-moz-selection {
+  background-color: #D4AF37;
+  color: #000000;
+}
+
+/* Custom Minimalist Dark-Gold Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #080605;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2C241B;
+  border-radius: 9999px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D4AF37;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+/* Cinematic Grain Overlay */
+.cinematic-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
+}
+
+/* Performance Layer Promotion */
+.gpu-layer {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
 }

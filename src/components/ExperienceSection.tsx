@@ -56,8 +56,6 @@ export const ExperienceSection: React.FC = () => {
     offset: ['start 70%', 'end 90%'],
   });
 
-  const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
-
   return (
     <section
       id="experience"
@@ -65,7 +63,7 @@ export const ExperienceSection: React.FC = () => {
       className="relative w-full bg-black text-[#E8DFD8] font-sans selection:bg-[#cbb59d] selection:text-black pt-4 pb-24 px-6 sm:px-12 lg:px-20 overflow-hidden"
     >
       {/* Subtle Background Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] bg-[#D4AF37]/[0.03] rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] bg-[#D4AF37]/[0.03] rounded-full blur-[150px] pointer-events-none gpu-layer" />
 
       <div className="max-w-4xl mx-auto w-full relative z-10">
         
@@ -113,10 +111,10 @@ export const ExperienceSection: React.FC = () => {
           {/* Background Track */}
           <div className="absolute left-[19px] md:left-[140px] top-4 bottom-8 w-[1px] bg-[#8C6D4F]/20" />
           
-          {/* Animated Gold Track */}
+          {/* Animated Gold Track (GPU Composited scaleY - Zero layout reflow) */}
           <motion.div
-            style={{ height: lineHeight }}
-            className="absolute left-[19px] md:left-[140px] top-4 w-[2px] bg-gradient-to-b from-[#D4AF37] via-[#C99E5D] to-[#8C6D4F]/10 shadow-[0_0_10px_#D4AF37] origin-top"
+            style={{ scaleY: scrollYProgress }}
+            className="absolute left-[19px] md:left-[140px] top-4 bottom-8 w-[2px] bg-gradient-to-b from-[#D4AF37] via-[#C99E5D] to-[#8C6D4F]/10 shadow-[0_0_10px_#D4AF37] origin-top gpu-layer"
           />
 
           <div className="space-y-12">

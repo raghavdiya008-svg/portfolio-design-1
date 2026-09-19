@@ -1,7 +1,8 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import watermarkImg from '../assets/watermark.png';
+import { smoothScrollTo } from '../utils/lenis';
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -41,26 +42,39 @@ interface HeroSectionProps {
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onOpenMobileMenu }) => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start'],
+  });
+
+  const videoOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
+  const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
+
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     if (href === '#') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      smoothScrollTo(0);
       return;
     }
     const id = href.replace('#', '');
     const el = document.getElementById(id);
     if (el) {
-      const yOffset = -70;
-      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
+      smoothScrollTo(el, -70);
     }
   };
 
   return (
-    <section className="relative w-screen h-screen overflow-hidden bg-black text-[#E8DFD8] font-sans selection:bg-[#cbb59d] selection:text-black">
+    <section 
+      ref={sectionRef} 
+      className="relative w-full h-screen overflow-hidden bg-black text-[#E8DFD8] font-sans selection:bg-[#cbb59d] selection:text-black"
+    >
 
-      {/* ================= 2. FIXED VIDEO LAYER ================= */}
-      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-black flex items-center justify-end">
+      {/* ================= 2. FIXED VIDEO LAYER WITH GPU COMPOSITING ================= */}
+      <motion.div 
+        style={{ opacity: videoOpacity, scale: videoScale }}
+        className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-black flex items-center justify-end gpu-layer"
+      >
         <video
           autoPlay
           muted
@@ -99,7 +113,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onOpenMo
             </motion.div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* ================= 4. CONTENT LAYER ================= */}
       <div className="relative z-10 flex flex-col justify-between h-full w-full px-6 sm:px-12 lg:px-16 pt-6 pb-8 pointer-events-none">

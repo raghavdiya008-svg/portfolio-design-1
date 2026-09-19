@@ -150,7 +150,7 @@ const ProjectMockup: React.FC<{ type: Project['previewType']; title: string }> =
         rotateY,
         transformStyle: 'preserve-3d',
       }}
-      className="relative w-full rounded-lg border border-[#8C6D4F]/40 bg-[#080605] overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.85)] p-4 select-none"
+      className="relative w-full rounded-lg border border-[#8C6D4F]/40 bg-[#080605] overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.85)] p-4 select-none gpu-layer"
     >
       {/* Browser Chrome Header */}
       <div className="flex items-center justify-between border-b border-[#8C6D4F]/25 pb-2.5 mb-3">
