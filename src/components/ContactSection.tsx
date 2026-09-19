@@ -5,10 +5,26 @@ import { motion } from 'framer-motion';
 export const ContactSection: React.FC = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [sent, setSent] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const directEmail = 'raghav13598@gmail.com';
+
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText(directEmail);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2500);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSent(true);
+
+    // Trigger direct mail client dispatch
+    const subject = encodeURIComponent(`Portfolio Inquiry from ${formData.name}`);
+    const body = encodeURIComponent(
+      `Hello Lohitha,\n\n${formData.message}\n\nSender: ${formData.name}\nReply to: ${formData.email}`
+    );
+    window.open(`mailto:${directEmail}?subject=${subject}&body=${body}`, '_blank');
   };
 
   return (
@@ -47,7 +63,7 @@ export const ContactSection: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
-                className="mb-8"
+                className="mb-6"
               >
                 <h2
                   className="text-5xl sm:text-6xl md:text-7xl tracking-tight uppercase leading-[0.85] select-none"
@@ -63,11 +79,28 @@ export const ContactSection: React.FC = () => {
               </motion.div>
 
               <p
-                className="text-xs sm:text-[13px] font-light text-[#A8988B] leading-relaxed max-w-md"
+                className="text-xs sm:text-[13px] font-light text-[#A8988B] leading-relaxed max-w-md mb-8"
                 style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
-                Have an ambitious system to architect, an engineering opportunity, or a collaborative inquiry? Send a direct dispatch below.
+                Have an ambitious system to architect, an engineering opportunity, or a collaborative inquiry? Send a direct dispatch below or reach out directly.
               </p>
+
+              {/* Direct Terminal Dispatch Card */}
+              <div className="p-4 rounded-sm border border-[#8C6D4F]/40 bg-[#0E0B09] space-y-2">
+                <span className="text-[10px] font-mono tracking-widest uppercase text-[#D4AF37] block">
+                  // DIRECT FREQUENCY
+                </span>
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-xs font-mono text-[#E8DFD8] truncate">{directEmail}</span>
+                  <button
+                    onClick={handleCopyEmail}
+                    data-cursor-text="COPY"
+                    className="px-3 py-1 text-[10px] tracking-wider uppercase border border-[#8C6D4F]/50 hover:border-[#D4AF37] text-[#D4AF37] transition-colors rounded-sm"
+                  >
+                    {copied ? 'COPIED! ✓' : 'COPY'}
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -89,16 +122,25 @@ export const ContactSection: React.FC = () => {
             <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-[#D4AF37]/60" />
 
             {sent ? (
-              <div className="py-16 text-center space-y-4">
-                <div className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-[#D4AF37] text-[#D4AF37] text-sm">
+              <div className="py-14 text-center space-y-4">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full border border-[#D4AF37] bg-[#D4AF37]/10 text-[#D4AF37] text-lg">
                   ✓
                 </div>
                 <h3 className="text-3xl text-white font-normal uppercase" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
-                  PACKET DELIVERED
+                  TRANSMISSION DISPATCHED
                 </h3>
-                <p className="text-xs text-[#A8988B] font-light" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                  Transmission registered successfully.
+                <p className="text-xs text-[#A8988B] font-light max-w-sm mx-auto" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                  Your message has been encoded and forwarded to {directEmail}. I will review and respond promptly.
                 </p>
+                <button
+                  onClick={() => {
+                    setSent(false);
+                    setFormData({ name: '', email: '', message: '' });
+                  }}
+                  className="mt-4 px-6 py-2 border border-[#8C6D4F]/50 text-xs text-[#D4AF37] hover:border-[#D4AF37] transition-colors uppercase tracking-widest"
+                >
+                  Send Another Dispatch
+                </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -106,14 +148,14 @@ export const ContactSection: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <span className="block text-[9.5px] font-mono tracking-[0.2em] uppercase text-[#8C6D4F] mb-2">
-                      // SENDER
+                      // SENDER NAME
                     </span>
                     <input
                       type="text"
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="Enter name"
+                      placeholder="e.g. Alex Morgan"
                       className="w-full bg-[#120F0C] border border-[#8C6D4F]/30 focus:border-[#D4AF37] text-xs text-white placeholder-[#8C6D4F]/50 px-4 py-3 outline-none rounded-sm transition-colors"
                       style={{ fontFamily: "'Montserrat', sans-serif" }}
                     />
@@ -121,14 +163,14 @@ export const ContactSection: React.FC = () => {
 
                   <div>
                     <span className="block text-[9.5px] font-mono tracking-[0.2em] uppercase text-[#8C6D4F] mb-2">
-                      // CHANNEL
+                      // CHANNEL (EMAIL)
                     </span>
                     <input
                       type="email"
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="Enter email"
+                      placeholder="alex@company.com"
                       className="w-full bg-[#120F0C] border border-[#8C6D4F]/30 focus:border-[#D4AF37] text-xs text-white placeholder-[#8C6D4F]/50 px-4 py-3 outline-none rounded-sm transition-colors"
                       style={{ fontFamily: "'Montserrat', sans-serif" }}
                     />
@@ -137,14 +179,14 @@ export const ContactSection: React.FC = () => {
 
                 <div>
                   <span className="block text-[9.5px] font-mono tracking-[0.2em] uppercase text-[#8C6D4F] mb-2">
-                    // PAYLOAD
+                    // TRANSMISSION PAYLOAD
                   </span>
                   <textarea
                     required
                     rows={4}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder="Enter transmission payload..."
+                    placeholder="Project specs, architectural inquiries, or collaboration scope..."
                     className="w-full bg-[#120F0C] border border-[#8C6D4F]/30 focus:border-[#D4AF37] text-xs text-white placeholder-[#8C6D4F]/50 p-4 outline-none rounded-sm transition-colors resize-none"
                     style={{ fontFamily: "'Montserrat', sans-serif" }}
                   />
@@ -152,7 +194,8 @@ export const ContactSection: React.FC = () => {
 
                 <button
                   type="submit"
-                  className="w-full py-3.5 border border-[#8C6D4F]/50 bg-[#14100D] hover:border-[#D4AF37] hover:bg-[#1A1510] text-[#E8DFD8] hover:text-[#F7E7C4] text-xs font-medium tracking-[0.25em] uppercase transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.5)]"
+                  data-cursor-text="SEND"
+                  className="w-full py-3.5 border border-[#8C6D4F]/50 bg-[#14100D] hover:border-[#D4AF37] hover:bg-[#1A1510] text-[#E8DFD8] hover:text-[#F7E7C4] text-xs font-medium tracking-[0.25em] uppercase transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.5)] cursor-pointer"
                   style={{ fontFamily: "'Montserrat', sans-serif" }}
                 >
                   EXECUTE DISPATCH ↗

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import watermarkImg from '../assets/watermark.png';
@@ -35,34 +35,14 @@ const navItems = [
   { name: 'CONTACT', href: '#contact' },
 ];
 
-export const HeroSection: React.FC = () => {
-  const [cursorPos, setCursorPos] = useState({ x: -100, y: -100 });
-  const [isHovered, setIsHovered] = useState(false);
+interface HeroSectionProps {
+  onOpenResume?: () => void;
+  onOpenMobileMenu?: () => void;
+}
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setCursorPos({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
+export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onOpenMobileMenu }) => {
   return (
-    <section className="relative w-screen h-screen overflow-hidden bg-black text-[#E8DFD8] font-sans selection:bg-[#cbb59d] selection:text-black cursor-none">
-      {/* ================= 1. MINIMAL CUSTOM CURSOR ================= */}
-      {cursorPos.x >= 0 && (
-        <motion.div
-          className="fixed top-0 left-0 pointer-events-none z-50 rounded-full border border-[#D4AF37]/40 flex items-center justify-center backdrop-blur-[1px]"
-          animate={{
-            x: cursorPos.x - (isHovered ? 24 : 5),
-            y: cursorPos.y - (isHovered ? 24 : 5),
-            width: isHovered ? 48 : 10,
-            height: isHovered ? 48 : 10,
-            backgroundColor: isHovered ? 'rgba(212, 175, 55, 0.1)' : 'rgba(235, 215, 195, 0.95)',
-          }}
-          transition={{ type: 'spring', damping: 30, stiffness: 350, mass: 0.5 }}
-        />
-      )}
+    <section className="relative w-screen h-screen overflow-hidden bg-black text-[#E8DFD8] font-sans selection:bg-[#cbb59d] selection:text-black">
 
       {/* ================= 2. FIXED VIDEO LAYER ================= */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none bg-black flex items-center justify-end">
@@ -113,9 +93,8 @@ export const HeroSection: React.FC = () => {
         <header className="relative flex items-center justify-between w-full pointer-events-auto">
           <a
             href="#"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            className="text-xs sm:text-sm font-semibold tracking-[0.35em] uppercase text-[#EAD8C7] hover:opacity-75 transition-opacity"
+            data-cursor-text="TOP"
+            className="text-xs sm:text-sm font-semibold tracking-[0.35em] uppercase text-[#EAD8C7] hover:opacity-75 transition-opacity select-none"
             style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
             LOHITHA.
@@ -130,8 +109,7 @@ export const HeroSection: React.FC = () => {
               <a
                 key={item.name}
                 href={item.href}
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
+                data-cursor-text="GOTO"
                 className="relative group py-1 transition-colors duration-300 hover:text-[#FFF5EB]"
               >
                 {item.name}
@@ -140,19 +118,30 @@ export const HeroSection: React.FC = () => {
             ))}
           </nav>
 
-          {/* Right Action */}
-          <a
-            href="#contact"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            className="group flex items-center space-x-2 text-[11px] tracking-[0.24em] font-light uppercase py-2 px-4 border border-[#8C6D4F]/50 hover:border-[#D4AF37] text-[#EAD8C7] transition-all duration-300 backdrop-blur-sm ml-auto md:ml-0"
-            style={{ fontFamily: "'Montserrat', sans-serif" }}
-          >
-            <span>LET&apos;S TALK</span>
-            <span className="transform transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-xs">
-              ↗
-            </span>
-          </a>
+          {/* Right Action & Mobile Menu Toggle */}
+          <div className="flex items-center gap-3 ml-auto md:ml-0">
+            <a
+              href="#contact"
+              data-cursor-text="TALK"
+              className="group flex items-center space-x-2 text-[11px] tracking-[0.24em] font-light uppercase py-2 px-4 border border-[#8C6D4F]/50 hover:border-[#D4AF37] text-[#EAD8C7] transition-all duration-300 backdrop-blur-sm"
+              style={{ fontFamily: "'Montserrat', sans-serif" }}
+            >
+              <span>LET&apos;S TALK</span>
+              <span className="transform transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-xs">
+                ↗
+              </span>
+            </a>
+
+            {onOpenMobileMenu && (
+              <button
+                onClick={onOpenMobileMenu}
+                className="md:hidden flex items-center justify-center p-2 rounded-full border border-[#8C6D4F]/50 text-[#EAD8C7] hover:text-[#D4AF37] hover:border-[#D4AF37] transition-colors"
+                aria-label="Open Navigation Menu"
+              >
+                ☰
+              </button>
+            )}
+          </div>
         </header>
 
         {/* Main Hero Row */}
@@ -220,10 +209,9 @@ export const HeroSection: React.FC = () => {
               {/* Explore My Work CTA */}
               <motion.a
                 href="#work"
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
+                data-cursor-text="WORK"
                 whileHover={{ scale: 1.02 }}
-                className="relative inline-flex items-center space-x-3 px-6 sm:px-7 py-3.5 border border-[#8C6D4F] bg-[#120F0C]/80 hover:border-[#D4AF37] text-[#EAD8C7] hover:text-[#FFF5EB] text-[11px] font-medium tracking-[0.24em] uppercase transition-all duration-300 shadow-[0_0_25px_rgba(212,175,55,0.18)]"
+                className="relative inline-flex items-center space-x-3 px-6 sm:px-7 py-3.5 border border-[#8C6D4F] bg-[#120F0C]/80 hover:border-[#D4AF37] text-[#EAD8C7] hover:text-[#FFF5EB] text-[11px] font-medium tracking-[0.24em] uppercase transition-all duration-300 shadow-[0_0_25px_rgba(212,175,55,0.18)] select-none"
               >
                 <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#E8D7C5]/40 to-transparent pointer-events-none" />
                 <span>EXPLORE MY WORK</span>
@@ -232,21 +220,19 @@ export const HeroSection: React.FC = () => {
                 </span>
               </motion.a>
 
-              {/* Download Resume Button */}
-              <motion.a
-                href="/resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
+              {/* View Resume Button */}
+              <motion.button
+                type="button"
+                onClick={onOpenResume}
+                data-cursor-text="RESUME"
                 whileHover={{ scale: 1.02 }}
-                className="relative inline-flex items-center space-x-2 px-6 sm:px-7 py-3.5 border border-[#8C6D4F]/40 hover:border-[#8C6D4F] text-[#BFA895] hover:text-[#EAD8C7] text-[11px] font-medium tracking-[0.24em] uppercase transition-all duration-300"
+                className="relative inline-flex items-center space-x-2 px-6 sm:px-7 py-3.5 border border-[#8C6D4F]/40 hover:border-[#8C6D4F] text-[#BFA895] hover:text-[#EAD8C7] text-[11px] font-medium tracking-[0.24em] uppercase transition-all duration-300 cursor-pointer select-none"
               >
-                <span>DOWNLOAD RESUME</span>
+                <span>VIEW RESUME</span>
                 <span className="transform transition-transform duration-300 group-hover:translate-y-0.5 text-xs">
                   ↓
                 </span>
-              </motion.a>
+              </motion.button>
             </motion.div>
           </motion.div>
 
