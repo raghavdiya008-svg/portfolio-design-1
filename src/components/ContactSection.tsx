@@ -1,6 +1,8 @@
 // src/components/ContactSection.tsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { toast } from 'sonner';
+import { Mail, Copy, Check, Send } from 'lucide-react';
 
 export const ContactSection: React.FC = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
@@ -12,12 +14,19 @@ export const ContactSection: React.FC = () => {
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(directEmail);
     setCopied(true);
+    toast.success('Frequency Copied', {
+      description: directEmail,
+    });
     setTimeout(() => setCopied(false), 2500);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSent(true);
+
+    toast.success('Transmission Encoded', {
+      description: 'Opening direct mail client...',
+    });
 
     // Trigger direct mail client dispatch
     const subject = encodeURIComponent(`Portfolio Inquiry from ${formData.name}`);
@@ -86,18 +95,22 @@ export const ContactSection: React.FC = () => {
               </p>
 
               {/* Direct Terminal Dispatch Card */}
-              <div className="p-4 rounded-sm border border-[#8C6D4F]/40 bg-[#0E0B09] space-y-2">
-                <span className="text-[10px] font-mono tracking-widest uppercase text-[#D4AF37] block">
-                  // DIRECT FREQUENCY
-                </span>
+              <div className="p-4 rounded-sm border border-[#8C6D4F]/40 bg-[#0E0B09] space-y-2.5">
+                <div className="flex items-center space-x-2 text-[#D4AF37]">
+                  <Mail className="w-3.5 h-3.5" />
+                  <span className="text-[10px] font-mono tracking-widest uppercase">
+                    DIRECT FREQUENCY
+                  </span>
+                </div>
                 <div className="flex items-center justify-between gap-3">
                   <span className="text-xs font-mono text-[#E8DFD8] truncate">{directEmail}</span>
                   <button
                     onClick={handleCopyEmail}
                     data-cursor-text="COPY"
-                    className="px-3 py-1 text-[10px] tracking-wider uppercase border border-[#8C6D4F]/50 hover:border-[#D4AF37] text-[#D4AF37] transition-colors rounded-sm"
+                    className="inline-flex items-center space-x-1.5 px-3 py-1 text-[10px] tracking-wider uppercase border border-[#8C6D4F]/50 hover:border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37]/10 transition-colors rounded-sm cursor-pointer"
                   >
-                    {copied ? 'COPIED! ✓' : 'COPY'}
+                    {copied ? <Check className="w-3 h-3 text-[#46A758]" /> : <Copy className="w-3 h-3" />}
+                    <span>{copied ? 'COPIED!' : 'COPY'}</span>
                   </button>
                 </div>
               </div>
@@ -137,7 +150,7 @@ export const ContactSection: React.FC = () => {
                     setSent(false);
                     setFormData({ name: '', email: '', message: '' });
                   }}
-                  className="mt-4 px-6 py-2 border border-[#8C6D4F]/50 text-xs text-[#D4AF37] hover:border-[#D4AF37] transition-colors uppercase tracking-widest"
+                  className="mt-4 px-6 py-2 border border-[#8C6D4F]/50 text-xs text-[#D4AF37] hover:border-[#D4AF37] transition-colors uppercase tracking-widest cursor-pointer"
                 >
                   Send Another Dispatch
                 </button>
@@ -195,10 +208,11 @@ export const ContactSection: React.FC = () => {
                 <button
                   type="submit"
                   data-cursor-text="SEND"
-                  className="w-full py-3.5 border border-[#8C6D4F]/50 bg-[#14100D] hover:border-[#D4AF37] hover:bg-[#1A1510] text-[#E8DFD8] hover:text-[#F7E7C4] text-xs font-medium tracking-[0.25em] uppercase transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.5)] cursor-pointer"
+                  className="w-full py-3.5 border border-[#8C6D4F]/50 bg-[#14100D] hover:border-[#D4AF37] hover:bg-[#1A1510] text-[#E8DFD8] hover:text-[#F7E7C4] text-xs font-medium tracking-[0.25em] uppercase transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.5)] cursor-pointer flex items-center justify-center space-x-2"
                   style={{ fontFamily: "'Montserrat', sans-serif" }}
                 >
-                  EXECUTE DISPATCH ↗
+                  <span>EXECUTE DISPATCH</span>
+                  <Send className="w-3.5 h-3.5" />
                 </button>
 
               </form>

@@ -7,16 +7,17 @@ export const MagneticCursor: React.FC = () => {
   const [cursorText, setCursorText] = useState('');
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
+  // Raw instantaneous mouse position (0ms lag, 100% direct)
   const rawX = useMotionValue(-100);
   const rawY = useMotionValue(-100);
 
-  const cursorX = useSpring(rawX, { damping: 28, stiffness: 350, mass: 0.4 });
-  const cursorY = useSpring(rawY, { damping: 28, stiffness: 350, mass: 0.4 });
+  // Snappy responsive follower (stiff, minimal mass for direct feel)
+  const followerX = useSpring(rawX, { damping: 35, stiffness: 650, mass: 0.08 });
+  const followerY = useSpring(rawY, { damping: 35, stiffness: 650, mass: 0.08 });
 
   useEffect(() => {
-    // Disable on touch / mobile devices
-    const touchCheck = window.matchMedia('(hover: none) or (pointer: coarse)');
-    if (touchCheck.matches || 'ontouchstart' in window) {
+    // Disable on touch devices
+    if (window.matchMedia('(hover: none) or (pointer: coarse)').matches || 'ontouchstart' in window) {
       setIsTouchDevice(true);
       return;
     }
@@ -46,8 +47,8 @@ export const MagneticCursor: React.FC = () => {
       setIsVisible(false);
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseover', handleMouseOver);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('mouseover', handleMouseOver, { passive: true });
     document.addEventListener('mouseleave', handleMouseLeave);
 
     return () => {
@@ -60,34 +61,34 @@ export const MagneticCursor: React.FC = () => {
   if (isTouchDevice || !isVisible) return null;
 
   return (
-    <>
-      {/* Outer Spring Ring */}
+    <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
+      {/* Snappy Interactive Outer Halo (Zero Click Interference) */}
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-50 flex items-center justify-center rounded-full border border-[#D4AF37]/50 backdrop-blur-[1.5px]"
+        className="fixed top-0 left-0 pointer-events-none flex items-center justify-center rounded-full border border-[#D4AF37]/45"
         style={{
-          x: cursorX,
-          y: cursorY,
+          x: followerX,
+          y: followerY,
           translateX: '-50%',
           translateY: '-50%',
         }}
         animate={{
-          width: isHovered ? (cursorText ? 72 : 48) : 24,
-          height: isHovered ? (cursorText ? 72 : 48) : 24,
-          backgroundColor: isHovered ? 'rgba(212, 175, 55, 0.12)' : 'rgba(212, 175, 55, 0.03)',
-          borderColor: isHovered ? 'rgba(212, 175, 55, 0.8)' : 'rgba(212, 175, 55, 0.35)',
+          width: isHovered ? (cursorText ? 64 : 40) : 20,
+          height: isHovered ? (cursorText ? 64 : 40) : 20,
+          backgroundColor: isHovered ? 'rgba(212, 175, 55, 0.08)' : 'transparent',
+          borderColor: isHovered ? 'rgba(212, 175, 55, 0.75)' : 'rgba(212, 175, 55, 0.3)',
         }}
-        transition={{ type: 'spring', damping: 25, stiffness: 350, mass: 0.3 }}
+        transition={{ duration: 0.15, ease: 'easeOut' }}
       >
         {cursorText && (
-          <span className="text-[9px] tracking-[0.2em] font-semibold text-[#F7E7C4] uppercase select-none">
+          <span className="text-[8.5px] tracking-[0.2em] font-semibold text-[#F7E7C4] uppercase select-none">
             {cursorText}
           </span>
         )}
       </motion.div>
 
-      {/* Inner Pinpoint Dot */}
+      {/* 100% Direct Instant Center Reticle (Direct with mouse pointer, zero delay) */}
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-50 w-1.5 h-1.5 rounded-full bg-[#F7E7C4]"
+        className="fixed top-0 left-0 pointer-events-none w-1 h-1 rounded-full bg-[#F7E7C4]"
         style={{
           x: rawX,
           y: rawY,
@@ -95,11 +96,10 @@ export const MagneticCursor: React.FC = () => {
           translateY: '-50%',
         }}
         animate={{
-          opacity: isHovered && cursorText ? 0 : 0.9,
-          scale: isHovered ? 0.6 : 1,
+          opacity: isHovered && cursorText ? 0 : 0.8,
         }}
-        transition={{ duration: 0.15 }}
+        transition={{ duration: 0.1 }}
       />
-    </>
+    </div>
   );
 };

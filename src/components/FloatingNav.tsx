@@ -14,10 +14,26 @@ export const FloatingNav: React.FC = () => {
   const [activeSection, setActiveSection] = useState('about');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    if (href === '#') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    const id = href.replace('#', '');
+    const el = document.getElementById(id);
+    if (el) {
+      const yOffset = -80;
+      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+    setMobileMenuOpen(false);
+  };
+
   useEffect(() => {
     const handleScroll = () => {
-      // Show floating nav after scrolling down past initial hero threshold
-      if (window.scrollY > 280) {
+      // Show floating nav when scrolled past hero
+      if (window.scrollY > 240) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
@@ -53,16 +69,18 @@ export const FloatingNav: React.FC = () => {
             initial={{ y: -80, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -80, opacity: 0 }}
-            transition={{ type: 'spring', damping: 24, stiffness: 280 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
             className="fixed top-5 left-0 right-0 z-40 flex justify-center px-4 pointer-events-none"
           >
             <nav
-              className="pointer-events-auto flex items-center justify-between px-5 py-2.5 rounded-full border border-[#D4AF37]/35 bg-black/75 backdrop-blur-xl shadow-[0_15px_35px_rgba(0,0,0,0.85)] w-full max-w-4xl"
+              className="pointer-events-auto flex items-center justify-between px-5 py-2.5 rounded-full border border-[#D4AF37]/35 bg-black/85 backdrop-blur-xl shadow-[0_15px_35px_rgba(0,0,0,0.85)] w-full max-w-4xl"
               style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
               {/* Logo */}
               <a
                 href="#"
+                onClick={(e) => scrollToSection(e, '#')}
+                data-cursor-text="TOP"
                 className="text-xs font-semibold tracking-[0.3em] uppercase text-[#EAD8C7] hover:text-[#D4AF37] transition-colors select-none"
               >
                 LOHITHA.
@@ -77,7 +95,9 @@ export const FloatingNav: React.FC = () => {
                     <a
                       key={item.name}
                       href={item.href}
-                      className={`relative px-3.5 py-1.5 transition-colors uppercase ${
+                      onClick={(e) => scrollToSection(e, item.href)}
+                      data-cursor-text="GOTO"
+                      className={`relative px-3.5 py-1.5 transition-colors uppercase cursor-pointer ${
                         isActive ? 'text-[#F7E7C4] font-medium' : 'text-[#A8988B] hover:text-[#E8DFD8]'
                       }`}
                     >
@@ -98,7 +118,9 @@ export const FloatingNav: React.FC = () => {
               <div className="flex items-center gap-3">
                 <a
                   href="#contact"
-                  className="hidden sm:inline-flex items-center gap-1 text-[10px] tracking-[0.2em] font-medium uppercase px-3.5 py-1.5 border border-[#8C6D4F]/60 rounded-full hover:border-[#D4AF37] text-[#EAD8C7] transition-all bg-[#120F0C]/60"
+                  onClick={(e) => scrollToSection(e, '#contact')}
+                  data-cursor-text="TALK"
+                  className="hidden sm:inline-flex items-center gap-1 text-[10px] tracking-[0.2em] font-medium uppercase px-3.5 py-1.5 border border-[#8C6D4F]/60 rounded-full hover:border-[#D4AF37] text-[#EAD8C7] transition-all bg-[#120F0C]/60 cursor-pointer"
                 >
                   <span>LET&apos;S TALK</span>
                   <span>↗</span>
@@ -148,11 +170,11 @@ export const FloatingNav: React.FC = () => {
                 <motion.a
                   key={item.name}
                   href={item.href}
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={(e) => scrollToSection(e, item.href)}
                   initial={{ opacity: 0, x: -30 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: idx * 0.08, duration: 0.4 }}
-                  className="text-2xl sm:text-3xl font-medium tracking-[0.2em] text-[#E8DFD8] hover:text-[#D4AF37] transition-colors flex items-center justify-between"
+                  transition={{ delay: idx * 0.06, duration: 0.3 }}
+                  className="text-2xl sm:text-3xl font-medium tracking-[0.2em] text-[#E8DFD8] hover:text-[#D4AF37] transition-colors flex items-center justify-between cursor-pointer"
                   style={{ fontFamily: "'Bebas Neue', sans-serif" }}
                 >
                   <span>{item.name}</span>
@@ -165,8 +187,8 @@ export const FloatingNav: React.FC = () => {
             <div className="border-t border-[#8C6D4F]/30 pt-6 flex flex-col gap-3 text-xs text-[#A8988B]">
               <a
                 href="#contact"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center py-3 bg-[#D4AF37] text-black font-semibold tracking-widest uppercase rounded-sm"
+                onClick={(e) => scrollToSection(e, '#contact')}
+                className="w-full text-center py-3 bg-[#D4AF37] text-black font-semibold tracking-widest uppercase rounded-sm cursor-pointer"
               >
                 START A PROJECT ↗
               </a>

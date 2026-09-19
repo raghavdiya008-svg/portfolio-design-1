@@ -41,6 +41,21 @@ interface HeroSectionProps {
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onOpenMobileMenu }) => {
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    if (href === '#') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    const id = href.replace('#', '');
+    const el = document.getElementById(id);
+    if (el) {
+      const yOffset = -70;
+      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="relative w-screen h-screen overflow-hidden bg-black text-[#E8DFD8] font-sans selection:bg-[#cbb59d] selection:text-black">
 
@@ -109,8 +124,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onOpenMo
               <a
                 key={item.name}
                 href={item.href}
+                onClick={(e) => scrollToSection(e, item.href)}
                 data-cursor-text="GOTO"
-                className="relative group py-1 transition-colors duration-300 hover:text-[#FFF5EB]"
+                className="relative group py-1 transition-colors duration-300 hover:text-[#FFF5EB] cursor-pointer"
               >
                 {item.name}
                 <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#D4AF37]/50 transition-all duration-300 group-hover:w-full" />
@@ -122,8 +138,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onOpenMo
           <div className="flex items-center gap-3 ml-auto md:ml-0">
             <a
               href="#contact"
+              onClick={(e) => scrollToSection(e, '#contact')}
               data-cursor-text="TALK"
-              className="group flex items-center space-x-2 text-[11px] tracking-[0.24em] font-light uppercase py-2 px-4 border border-[#8C6D4F]/50 hover:border-[#D4AF37] text-[#EAD8C7] transition-all duration-300 backdrop-blur-sm"
+              className="group flex items-center space-x-2 text-[11px] tracking-[0.24em] font-light uppercase py-2 px-4 border border-[#8C6D4F]/50 hover:border-[#D4AF37] text-[#EAD8C7] transition-all duration-300 backdrop-blur-sm cursor-pointer"
               style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
               <span>LET&apos;S TALK</span>
@@ -209,9 +226,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenResume, onOpenMo
               {/* Explore My Work CTA */}
               <motion.a
                 href="#work"
+                onClick={(e) => scrollToSection(e, '#work')}
                 data-cursor-text="WORK"
                 whileHover={{ scale: 1.02 }}
-                className="relative inline-flex items-center space-x-3 px-6 sm:px-7 py-3.5 border border-[#8C6D4F] bg-[#120F0C]/80 hover:border-[#D4AF37] text-[#EAD8C7] hover:text-[#FFF5EB] text-[11px] font-medium tracking-[0.24em] uppercase transition-all duration-300 shadow-[0_0_25px_rgba(212,175,55,0.18)] select-none"
+                className="relative inline-flex items-center space-x-3 px-6 sm:px-7 py-3.5 border border-[#8C6D4F] bg-[#120F0C]/80 hover:border-[#D4AF37] text-[#EAD8C7] hover:text-[#FFF5EB] text-[11px] font-medium tracking-[0.24em] uppercase transition-all duration-300 shadow-[0_0_25px_rgba(212,175,55,0.18)] select-none cursor-pointer"
               >
                 <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#E8D7C5]/40 to-transparent pointer-events-none" />
                 <span>EXPLORE MY WORK</span>
